@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar'
 import Body from './Body'
 import Body2 from './Body2'
+import Body3 from './Body3'
+import Body4 from './Body4'
 import axios from "axios"
 import Footer from './Footer'
 
@@ -41,11 +43,11 @@ function Home() {
        <div className='h-screen w-screen overflow-hidden bg-gradient-to-r from-cyan-500 to-red-500'>
           <Body2/>
        </div>
-       <div className='h-screen w-screen overflow-hidden bg-gradient-to-r from-red-500 to-cyan-500'>
-          <Body2/>
+       <div className='h-screen w-screen overflow-hidden bg-gradient-to-r from-cyan-500 to-red-500'>
+          <Body3/>
        </div>
-       <div className='h-screen w-screen overflow-hidden bg-gradient-to-r from-slate-500 to-cyan-500'>
-          <Body2/>
+       <div className='h-screen w-screen overflow-hidden bg-gradient-to-r from-cyan-500 to-red-500'>
+          <Body4/>
        </div>
        <div className='h-screen w-screen overflow-hidden bg-gradient-to-r from-gray-500 to-white-500'>
           <Footer/>

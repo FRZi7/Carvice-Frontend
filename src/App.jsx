@@ -9,6 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import PublicRoute from './components/PublicRoute'
 import Bookcarwash from './pages/bookcarwash'
 import Success from './pages/Success'
+import Bookmechanic from './pages/Bookmechanic'
 
 
 function App() {
@@ -21,7 +22,9 @@ function App() {
     <Route path="/login" element={<PublicRoute><Login/></PublicRoute>}/>
     <Route path="/userregister" element={<PublicRoute><Registration/></PublicRoute>}/>
     <Route path="/bookcarwash" element={<ProtectedRoute><Bookcarwash/></ProtectedRoute>}/>
+    <Route path='/mechanic' element={<ProtectedRoute><Bookmechanic/></ProtectedRoute>}/>
     <Route path='/success' element={<Success/>}/>
+
    </Routes>
    </BrowserRouter>
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './navbarr.css';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { store, persistor } from './redux/configureStore';
 
 const Navbar = () => {
@@ -25,10 +26,11 @@ const Navbar = () => {
     localStorage.removeItem('id');
     localStorage.removeItem('persist:root');
     window.location.reload();
+    
   };
 
   return (
-    <nav className="w-fit">
+    <nav className="w-fit relative z-50">
       <div className="max-w-fit mx-auto px-6 sm:px-48 lg:px-48">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -182,6 +184,13 @@ const Navbar = () => {
           >
             Contact
           </a>
+          <a
+            href="#"
+            className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition delay-75 duration-75 ease-in-out"
+          >
+            login
+          </a>
+          
         </div>
       </div>
     </nav>

@@ -12,7 +12,7 @@ function Body4() {
       />
       <div className="absolute inset-0 flex items-center justify-center text-justify">
         <h2 className="text-white text-3xl mx-10 font-bold">
-          THE CLEANEST WAY<br/>
+          THE MECHANIC<br/>
           Our car wash is deemed to be the <br/>
           best of all the car washes out there. <br/>
           We pick out the right one meant for your <br/>

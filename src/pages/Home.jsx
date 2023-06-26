@@ -40,10 +40,10 @@ function Home() {
        </div>
       </div>
       <div id='carwash'>
-       <div className='h-screen w-screen overflow-hidden bg-gradient-to-r from-cyan-500 to-red-500'>
+       <div className='h-screen w-screen overflow-hidden bg-gradient-to-r from-black to-slate-950'>
           <Body2/>
        </div>
-       <div className='h-screen w-screen overflow-hidden bg-gradient-to-r from-cyan-500 to-red-500'>
+       <div className='h-screen w-screen overflow-hidden bg-gradient-to-r from-black to-slate-950'>
           <Body3/>
        </div>
        <div className='h-screen w-screen overflow-hidden bg-gradient-to-r from-cyan-500 to-red-500'>

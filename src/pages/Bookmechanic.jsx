@@ -16,9 +16,12 @@ function Bookmechanic() {
     const onSubmit = async(e)=>{
     try {
       e.preventDefault()
-        const response = await axios.post("http://localhost:1102/api/user/mechanic",mechanicData)
+        const response = await axios.post("http://localhost:1102/api/user/mechanic",mechanicData,{
+          headers:{
+            Authorization : "Bearer "+ localStorage.getItem("token")
+          },
+        })
         if(response){
-           
             toast.success("Registration Complete")
             navigate("/success")
         }else{
@@ -35,6 +38,7 @@ function Bookmechanic() {
   }
  
   return (
+    <>
     <div className="bookingcarname">
       <Navbar/>
       <div className="relative justify-center">
@@ -165,6 +169,10 @@ function Bookmechanic() {
         </form>
       </div>
     </div>
+    <div>
+      <Footer/>
+    </div>
+    </>
   );
 }
 

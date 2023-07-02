@@ -13,6 +13,7 @@ import Bookmechanic from './pages/Bookmechanic'
 import Edituser from './pages/Edituser'
 
 
+
 function App() {
   return (
 
@@ -26,6 +27,7 @@ function App() {
     <Route path='/mechanic' element={<ProtectedRoute><Bookmechanic/></ProtectedRoute>}/>
     <Route path='/edituser' element={<ProtectedRoute><Edituser/></ProtectedRoute>}/>
     <Route path='/success' element={<Success/>}/>
+    {/* <Route path='/servicehistory' element={<ProtectedRoute><Usertable/></ProtectedRoute>}/> */}
 
    </Routes>
    </BrowserRouter>

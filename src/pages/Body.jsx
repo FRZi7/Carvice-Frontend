@@ -5,7 +5,6 @@ import React from 'react'
 function Body() {
 
   return (
-//     <div className="flex justify-around mt-40 ">
 <>
 <div className="flex justify-around mt-40">
   <div className="mb-4 nagata relative">

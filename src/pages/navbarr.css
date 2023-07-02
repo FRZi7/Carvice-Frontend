@@ -1,7 +1,8 @@
 
   
   .navimg {
+    margin: 10px;
     height: 7rem;
     width: 7rem;
-  
+    overflow-x: hidden
   }

@@ -12,23 +12,21 @@ function Login() {
   const dispatch = useDispatch()
   const [logindata, setLogindata] = useState({email:"",password:""})
   const onSubmit =async(e)=>{
+    e.preventDefault()
     try {
-      e.preventDefault()
       const response = await axios.post("http://localhost:1102/api/user/login",logindata)
       if(response.data.success){
+        console.log(response.data.user,"gfdi")
         toast.success("login success")
         localStorage.setItem("token",response.data.data)
         dispatch(addUsers(response.data.user))
         navigate("/")
       }else{
-        response
-        .status(400)
-        .send({message:response.data.message, success:false})
-          toast.error("Wrong credentials ")
+          toast.error("wrong credentials")
       }
-    } catch (error) {
-      console.log(error)
-      toast.error("Something went wrong")
+    }
+     catch (error) {
+      toast.error("something went wrong")
     }
 
   }

@@ -7,6 +7,7 @@ import Success from './Success';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import jwt_decode from "jwt-decode"
+import Footer from './Footer';
 
 function Bookcarwash() {
   const token = localStorage.getItem("token")
@@ -29,7 +30,12 @@ function Bookcarwash() {
       e.preventDefault();
       const response = await axios.post(
         'http://localhost:1102/api/user/service',
-        bookCarwash
+        bookCarwash,
+        {
+          headers:{
+            Authorization : "Bearer "+ localStorage.getItem("token")
+          },
+        }
       );
       console.log(response, 'sadasdasd');
       if (response.data.success) {
@@ -47,6 +53,7 @@ function Bookcarwash() {
 
 
   return (
+    <>
     <div className="bookingcarname">
       <Navbar />
       <div className="relative justify-center">
@@ -57,7 +64,7 @@ function Bookcarwash() {
         />
         <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
           <h1 className="text-white text-7xl font-bold font-serif">
-            CARWASH BOOKING
+            CARWASH BOOKING   
           </h1>
         </div>
       </div>
@@ -219,6 +226,10 @@ function Bookcarwash() {
         </form>
       </div>
     </div>
+    <div>
+      <Footer/>
+    </div>
+    </>
   );
 }
 

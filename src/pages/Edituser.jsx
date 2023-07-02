@@ -1,10 +1,25 @@
-// import React, { useState } from 'react';
+// import React, { useEffect, useState } from 'react';
 // import Navbar from './Navbar';
+// import jwtDecode from 'jwt-decode';
+// import { useDispatch, useSelector } from 'react-redux';
+// import axios from 'axios';
+// // import { useParams } from 'react-router-dom';
+// import { toast } from 'react-hot-toast';
+// import { addUsers } from './redux/userSlice';
 
 // function EditUser() {
+//   const dispatch = useDispatch()
+//   const token = localStorage.getItem("token")
+//   const decoded = jwtDecode(token)
+//   const userid = decoded.id
+//   const userData = useSelector((store)=>store.user?.items)
+//   console.log(userid)
+//   console.log(userData,"jhsdf")
+  
 //   const [showDetailsModal, setShowDetailsModal] = useState(false);
 //   const [showPasswordModal, setShowPasswordModal] = useState(false);
-
+//   const [userDetails, setUserdetails] = useState({name:userData.name}) 
+  
 //   const handleShowDetailsModal = () => {
 //     setShowDetailsModal(true);
 //   };
@@ -12,21 +27,50 @@
 //   const handleShowPasswordModal = () => {
 //     setShowPasswordModal(true);
 //   };
-
 //   const handleCloseModal = () => {
 //     setShowDetailsModal(false);
 //     setShowPasswordModal(false);
 //   };
+  
+  
+//   const onSubmit= async(e) =>{
+   
+//     try {
+//       const response = await axios.post("http://localhost:1102/api/user/edituser",userDetails,{
+//         headers:{
+//           Authorization : "Bearer " + localStorage.getItem("token")
+//         }
+//       }) 
+//       if(response){
+//         console.log(response.data.userEdit,"sdasdasdasd")
+//         // toast.success("successfully edited")
+//         dispatch(addUsers(response.data.userEdit))
+//       }else{
+//         toast.error("edit failure")
+//       }
+//     } catch (error) {
+//       console.log(error)
+//       toast.error("something went wrong")
+//     }
+//   }
 
+
+
+//   useEffect(() => {
+//    onSubmit()
+//   }, [])
+  
+  
+ 
 //   return (
 //     <div className="edituser">
-//       <Navbar />
+//       <Navbar/>
 //       <div
-//         className="flex justify-center items-center object-fill min-h-screen"
+//         className="flex justify-center items-center object-fill min-h-screen w-screen overflow-y-hidden"
 //         style={{ background: `url('/img/8s4a9017.jpg')`, backgroundSize: 'cover' }}
 //       >
 //         <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
-//           <h2 className="text-2xl font-bold mb-4 text-center">Edit User Details</h2>
+//           <h2 className="text-2xl font-bold mb-4 text-center">User Profile</h2>
 //           <div className="mb-4">
 //             <button
 //               type="button"
@@ -42,77 +86,168 @@
 //               onClick={handleShowPasswordModal}
 //               className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md w-full"
 //             >
-//               Change Password
+//              <a href='/servicehistory'>View Service History</a> 
 //             </button>
 //           </div>
 //         </div>
 //       </div>
 
 //       {showDetailsModal && (
-//         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+//         <div
+//           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+//           style={{ transition: 'opacity 0.3s' }}
+//         >
 //           <div className="w-96 bg-white rounded-lg shadow-md p-6">
 //             <h2 className="text-2xl font-bold mb-4 text-center">Change User Details</h2>
-//             {/* Add your form inputs for changing user details */}
-//             <button
-//               type="button"
-//               onClick={handleCloseModal}
-//               className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md w-full"
-//             >
-//               Save
-//             </button>
+//             <form onSubmit={onSubmit}>
+
+//               <div className="mb-4">
+//                 <label htmlFor="name" className="block font-semibold mb-1">
+//                   Name
+//                 </label>
+//                 <input
+//                   type="text"
+//                   id="name"
+//                   name="name"
+//                   value={userDetails?.name}
+//                   onChange={(e)=>{setUserdetails({...userDetails,name:e.target.value})}}
+//                   className="w-full px-3 py-2 border rounded-md"
+//                 />
+//               </div>
+//           <div className="mb-4">
+//             <label htmlFor="email" className="block font-semibold mb-1">
+//               Email
+//             </label>
+//             <input
+//               type="email"
+//               id="email"
+//               name="email"
+//               value={userData?.email}
+//               className="w-full px-3 py-2 border rounded-md text-gray-500 bg-slate-300"
+//               disabled 
+//             />
+//                 </div>
+//             </form>
+//             <div className="flex justify-end">
+//               <button
+//                 type="button"
+//                 onClick={handleCloseModal}
+//                 className="text-blue-500 hover:text-blue-600 font-semibold"
+//               >
+//                 Close
+//               </button>
+//               <button
+//                 type="button"
+//                 onClick={onSubmit} 
+//                 className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md ml-2"
+//               >
+//                 Save
+//               </button>
+//             </div>
 //           </div>
 //         </div>
 //       )}
 
-//       {showPasswordModal && (
-//         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-//           <div className="w-96 bg-white rounded-lg shadow-md p-6">
-//             <h2 className="text-2xl font-bold mb-4 text-center">Change Password</h2>
-//             {/* Add your form inputs for changing password */}
-//             <button
-//               type="button"
-//               onClick={handleCloseModal}
-//               className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md w-full"
-//             >
-//               Save
-//             </button>
-//           </div>
-//         </div>
-//       )}
+     
 //     </div>
 //   );
 // }
 
 // export default EditUser;
-import React, { useState } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
+import jwtDecode from 'jwt-decode';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
+import { addUsers } from './redux/userSlice';
 
 function EditUser() {
+  const dispatch = useDispatch();
+  const token = localStorage.getItem('token');
+  const decoded = jwtDecode(token);
+  const userid = decoded.id;
+  const userData = useSelector((store) => store.user?.items);
+  
   const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showServiceHistoryModal, setShowServiceHistoryModal] = useState(false);
+  const [userDetails, setUserDetails] = useState({ name: userData.name });
+  const [serviceHistory, setServiceHistory] = useState({name:" ",service:" "});
+
+  const servicehistory = Object.values(serviceHistory);
 
   const handleShowDetailsModal = () => {
     setShowDetailsModal(true);
   };
 
-  const handleShowPasswordModal = () => {
-    setShowPasswordModal(true);
+  const handleShowServiceHistoryModal = () => {
+    setShowServiceHistoryModal(true);
   };
 
   const handleCloseModal = () => {
     setShowDetailsModal(false);
-    setShowPasswordModal(false);
+    setShowServiceHistoryModal(false);
   };
+
+  const onSubmit = async (e) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:1102/api/user/edituser',
+        userDetails,
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
+          },
+        }
+      );
+      if (response) {
+        dispatch(addUsers(response.data.userEdit));
+        toast.success("successfully edited")
+      } else {
+        toast.error('Edit failure');
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong');
+    }
+  };
+
+  const fetchServiceHistory = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:1102/api/user/servicehistory`,
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
+          },
+        }
+      );
+      if (response) {
+
+        console.log(response.data.data)
+        setServiceHistory(response.data.data);
+        setShowServiceHistoryModal(true);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error('Failed to fetch service history');
+    }
+  };
+
+  useEffect(() => {
+    onSubmit();
+  }, []);
 
   return (
     <div className="edituser">
       <Navbar />
       <div
-        className="flex justify-center items-center object-fill min-h-screen"
+        className="flex justify-center items-center object-fill min-h-screen w-screen overflow-y-hidden"
         style={{ background: `url('/img/8s4a9017.jpg')`, backgroundSize: 'cover' }}
       >
         <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-bold mb-4 text-center">Edit User Details</h2>
+          <h2 className="text-2xl font-bold mb-4 text-center">User Profile</h2>
           <div className="mb-4">
             <button
               type="button"
@@ -125,10 +260,10 @@ function EditUser() {
           <div className="mb-4">
             <button
               type="button"
-              onClick={handleShowPasswordModal}
+              onClick={fetchServiceHistory}
               className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md w-full"
             >
-              Change Password
+              View Service History
             </button>
           </div>
         </div>
@@ -141,8 +276,7 @@ function EditUser() {
         >
           <div className="w-96 bg-white rounded-lg shadow-md p-6">
             <h2 className="text-2xl font-bold mb-4 text-center">Change User Details</h2>
-            <form>
-              {/* Add your form inputs for changing user details */}
+            <form onSubmit={onSubmit}>
               <div className="mb-4">
                 <label htmlFor="name" className="block font-semibold mb-1">
                   Name
@@ -151,6 +285,10 @@ function EditUser() {
                   type="text"
                   id="name"
                   name="name"
+                  value={userDetails?.name}
+                  onChange={(e) => {
+                    setUserDetails({ ...userDetails, name: e.target.value });
+                  }}
                   className="w-full px-3 py-2 border rounded-md"
                 />
               </div>
@@ -162,7 +300,9 @@ function EditUser() {
                   type="email"
                   id="email"
                   name="email"
-                  className="w-full px-3 py-2 border rounded-md"
+                  value={userData?.email}
+                  className="w-full px-3 py-2 border rounded-md text-gray-500 bg-slate-300"
+                  disabled
                 />
               </div>
             </form>
@@ -176,7 +316,7 @@ function EditUser() {
               </button>
               <button
                 type="button"
-                onClick={handleCloseModal}
+                onClick={onSubmit}
                 className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md ml-2"
               >
                 Save
@@ -186,49 +326,29 @@ function EditUser() {
         </div>
       )}
 
-      {showPasswordModal && (
+      {showServiceHistoryModal && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
           style={{ transition: 'opacity 0.3s' }}
         >
           <div className="w-96 bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold mb-4 text-center">Change Password</h2>
-            <form>
-              {/* Add your form inputs for changing password */}
-              <div className="mb-4">
-                <label htmlFor="oldPassword" className="block font-semibold mb-1">
-                  Old Password
-                </label>
-                <input
-                  type="password"
-                  id="oldPassword"
-                  name="oldPassword"
-                  className="w-full px-3 py-2 border rounded-md"
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="newPassword" className="block font-semibold mb-1">
-                  New Password
-                </label>
-                <input
-                  type="password"
-                  id="newPassword"
-                  name="newPassword"
-                  className="w-full px-3 py-2 border rounded-md"
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="confirmPassword" className="block font-semibold mb-1">
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  className="w-full px-3 py-2 border rounded-md"
-                />
-              </div>
-            </form>
+            <h2 className="text-2xl font-bold mb-4 text-center">Service History</h2>
+            <table className="w-full">
+              <thead>
+                <tr>
+                  <th className="px-4 py-2">Service</th>
+                  <th className="px-4 py-2">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {servicehistory.map((service) => (
+                  <tr key={service.id}>
+                    <td className="px-4 py-2">{service.name}</td>
+                    <td className="px-4 py-2">{service.service}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
             <div className="flex justify-end">
               <button
                 type="button"
@@ -236,13 +356,6 @@ function EditUser() {
                 className="text-blue-500 hover:text-blue-600 font-semibold"
               >
                 Close
-              </button>
-              <button
-                type="button"
-                onClick={handleCloseModal}
-                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md ml-2"
-              >
-                Save
               </button>
             </div>
           </div>
@@ -253,4 +366,3 @@ function EditUser() {
 }
 
 export default EditUser;
-

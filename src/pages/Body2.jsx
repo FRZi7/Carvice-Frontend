@@ -30,11 +30,11 @@ function Body2() {
   }, []);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       <a href="/">
         <div className="w-screen relative">
           <video
-            className="object-cover w-screen h-screen md:w-screen transition-all"
+            className="object-cover w-fit h-screen md:w-full transition-all"
             autoPlay
             muted
             loop
@@ -51,7 +51,7 @@ function Body2() {
               <br />
               We make sure your car gets the wash it needs.
               <br />
-              The paint on these cars are exclusive and we have the right washing materials for your car, so don't worry, we'll take care of it with utmost care.
+              The paint on these cars are exclusive and we have the right washing<br/> materials for your car, so don't worry, we'll take care of it with utmost care.
               <br />
               Book an appointment now, and your first wash is on us.
             </h2>

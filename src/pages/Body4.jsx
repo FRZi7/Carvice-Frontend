@@ -29,8 +29,8 @@ function Body2() {
               <br />
               Book an appointment now with our mechanic.
             </h2>
-            <div className="bookcarwash mt-4">
-              <a href="/bookcarwash">
+            <div className="mechanic mt-4">
+              <a href="/mechanic">
                 <button className="bg-red-800 hover:bg-red-600 text-white font-bold py-2 px-4 border border-white-700 rounded-xl">
                   Book a slot 
                 </button>

@@ -47,8 +47,8 @@ function Login() {
           
           <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md require:password">Login</button>
           <div className='register text-center mt-5 text-red-700' >
-            <h4><a href='/userregister'>Not a user? register here</a></h4>
-            <h4><a href='/userregister'>Forgot password?</a></h4>
+            <h4><a href='/userregister'>Not a user? Register here</a></h4><br/>
+            <h4><a href='/forgotpassword'>Forgot password?</a></h4>
           </div>
         </form>
       </div>

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import jwt_decode from "jwt-decode"
 import axios from 'axios';
+import Footer from './Footer';
 
 function Bookmechanic() {
     const token = localStorage.getItem("token")

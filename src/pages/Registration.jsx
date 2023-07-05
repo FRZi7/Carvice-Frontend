@@ -6,19 +6,20 @@ import axios from 'axios';
 function Registration(){
   const [registerdata, setRegisterdata] = useState({name:"",email:"",password:"",phone:"",cpassword:""})
   const navigate = useNavigate()
+
   const onSubmit = async(e)=>{
       try {
         e.preventDefault()
-        console.log(registerdata)
+        console.log(registerdata,"hi")
         const response = await axios.post("http://localhost:1102/api/user/register",registerdata)
-      
       if(response.data.success){
         toast.success(response.data.message)
-        navigate("/login")
+        navigate("/otp")
       }else{
-        toast.error(response.data.message)
+        toast.error(response.data.message)  
       }
     } catch (error) {
+      console.log(error)
       toast.error("Something went wrong")
     }
     }
@@ -31,23 +32,23 @@ function Registration(){
         <form onSubmit={onSubmit}> 
           <div className="mb-4">
             <label htmlFor="email" className="block font-medium mb-2">Name</label>
-            <input type="name"  placeholder="enter your name" id="name" className="w-full border border-gray-300 rounded-md px-3 py-2 required" onChange={(e)=>{setRegisterdata({...registerdata,name:e.target.value})}} />
+            <input type="name"  placeholder="enter your name" name='name' id="name" className="w-full border border-gray-300 rounded-md px-3 py-2 required" onChange={(e)=>{setRegisterdata({...registerdata,name:e.target.value})}} />
           </div>
           <div className="mb-4">
             <label htmlFor="email" className="block font-medium mb-2">Email</label> 
-            <input type="email" placeholder="enter your email" id="email" className="w-full border border-gray-300 rounded-md px-3 py-2 required" onChange={(e)=>{setRegisterdata({...registerdata,email:e.target.value})}}/>
+            <input type="email" placeholder="enter your email" name='email' id="email" className="w-full border border-gray-300 rounded-md px-3 py-2 required" onChange={(e)=>{setRegisterdata({...registerdata,email:e.target.value})}}/>
           </div>
           <div className="mb-4">
             <label htmlFor="phone number" className="block font-medium mb-2">Mobile Number</label>
-            <input type="number" placeholder="enter your number" id="mobilenumber" className="w-full border border-gray-300 rounded-md px-3 py-2 required" onChange={(e)=>{setRegisterdata({...registerdata,phone:e.target.value})}}/>
+            <input type="number" placeholder="enter your number" name='mobilenumber' id="mobilenumber" className="w-full border border-gray-300 rounded-md px-3 py-2 required" onChange={(e)=>{setRegisterdata({...registerdata,phone:e.target.value})}}/>
           </div>
           <div className="mb-4">
             <label htmlFor="password" className="block font-medium mb-2">Password</label>
-            <input type="passowrd" placeholder="enter your password" id="password" className="w-full border border-gray-300 rounded-md px-3 py-2 required" onChange={(e)=>{setRegisterdata({...registerdata,password:e.target.value})}} />
+            <input type="password" placeholder="enter your password" name='password' id="password" className="w-full border border-gray-300 rounded-md px-3 py-2 required" onChange={(e)=>{setRegisterdata({...registerdata,password:e.target.value})}} />
           </div>
           <div className="mb-4">
             <label htmlFor="confirm password" className="block font-medium mb-2">Confirm Password</label> 
-            <input type="password"  placeholder="confirm password" id="cpassword" className="w-full border border-gray-300 rounded-md px-3 py-2 required" onChange={(e)=>{setRegisterdata({...registerdata,cpassword:e.target.value})}}/>
+            <input type="password"  placeholder="confirm password" name='cpassword' id="cpassword" className="w-full border border-gray-300 rounded-md px-3 py-2 required" onChange={(e)=>{setRegisterdata({...registerdata,cpassword:e.target.value})}}/>
           </div>
           <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md  text-center content-center ml-28   ">Register</button>
           <div className='alreadyuser text-center text-red-700 mt-2' >

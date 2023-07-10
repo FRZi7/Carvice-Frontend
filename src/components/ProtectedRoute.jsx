@@ -5,6 +5,7 @@ const admintoken = localStorage.getItem("admintoken")
 const token = localStorage.getItem("token")
 
 function ProtectedRoute(props) {
+  console.log("protected route")
   const navigate = useNavigate()
   useEffect(()=>{
     if(token){
@@ -20,6 +21,7 @@ function ProtectedRoute(props) {
 }
 
 function ProtectedRoute2(props) {
+  console.log("AQER protected route 2")
   const navigate = useNavigate()
   useEffect(()=>{
     if(token){
@@ -35,6 +37,7 @@ function ProtectedRoute2(props) {
 }
 
 function ProtectedRoute3(props) {
+  console.log("protected route 3")
   if (!token) {
     return <Navigate to = {"/login"}/>
   }

@@ -12,10 +12,10 @@ function Adminloginpage() {
         try {
             e.preventDefault()
             const response = await axios.post("http://localhost:1102/api/admin/adminlogin",adminDetails)
-          
         if(response.data.success){
             toast.success("Admin logged in")
             localStorage.setItem("admintoken",response.data.data)
+            window.location.reload()
             navigate("/admin/home")
 
         }else{

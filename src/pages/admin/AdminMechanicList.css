@@ -1,0 +1,25 @@
+.pagination1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25rem;
+  }
+  
+  .pagination__link1 {
+    display: inline-flex;
+    margin: 0 0.5rem;
+    padding: 0.5rem;
+    background-color: #6473c2;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .pagination__link--disabled {
+    opacity: 1;
+    cursor: not-allowed;
+  }
+  
+  .pagination__link--active {
+    font-weight: bold;
+  }
+  

@@ -33,11 +33,9 @@ function EditUser() {
   const handleShowDetailsModal = () => {
     setShowDetailsModal(true);
   };
-
   const handleShowServiceHistoryModal = () => {
     setShowServiceHistoryModal(true);
   };
-
   const handleCloseModal = () => {
     setShowDetailsModal(false);
     setShowServiceHistoryModal(false);

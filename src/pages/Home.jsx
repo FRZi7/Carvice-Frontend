@@ -13,7 +13,7 @@ function Home() {
   return (
     <>
       <div className='h-screen w-screen'>
-      <div className=" h-screen  w-fit bg-center bg-cover" style={{ backgroundImage: 'url("img/melih-karaahmet-Tkz9YXDn3FY-unsplash.jpg")' }}>
+      <div className=" h-screen w-full bg-center bg-cover" style={{ backgroundImage: 'url("img/melih-karaahmet-Tkz9YXDn3FY-unsplash.jpg")' }}>
         <Navbar/>
         <Body/>
         <div className="flex flex-wrap justify-start">

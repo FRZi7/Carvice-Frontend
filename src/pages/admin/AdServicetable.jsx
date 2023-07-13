@@ -21,8 +21,6 @@ const [Status, setstatus] = useState("")
     const handlePageChange = ({ selected }) => {
         setPageNumber(selected);
       };
-
-    console.log(serviceTable,"asdasd")
     const service = async(e)=>{
         try {
             
@@ -33,7 +31,7 @@ const [Status, setstatus] = useState("")
               }
             })
         if(response){
-            console.log(response.data.data[0].user.name,"123")
+            // console.log(response.data.data[0].user.name,"123")
             setServicetable(response.data.data)
         }else{
             toast.error("Error in receiving")
@@ -90,7 +88,7 @@ const [Status, setstatus] = useState("")
         <li key="phone">Phone</li>
         <li key="address">Address</li>
         <li key="DOJ">Date</li>
-        <li key="DOJ">Completed on</li>
+        <li key="DOn">Completed on</li>
         <li key="action">Status</li>
         
       </ul>

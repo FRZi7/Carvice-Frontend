@@ -5,10 +5,10 @@ import ReactPaginate from 'react-paginate';
 
 
 function MechanicServices() {
-    const [MechanicService, setMechanicservice] = useState([])
-    const [mechanicList, setMechaniclist] = useState([])
-    console.log(mechanicList,"1e")
-    console.log(MechanicService,"gigigigi")
+const [MechanicService, setMechanicservice] = useState([])
+const [mechanicList, setMechaniclist] = useState([])
+const [mech,setMech] = useState([])
+
 
 const [pageNumber, setPageNumber] = useState(0);
 const itemsPerPage = 7 ;
@@ -17,11 +17,12 @@ const startIndex = pageNumber * itemsPerPage;
 const endIndex = startIndex + itemsPerPage;
 const displayedData = MechanicService.slice(startIndex, endIndex);
 
+
 const handlePageChange = ({ selected }) => {
     setPageNumber(selected);
-  };
-
-    const mechService = async()=>{
+    };
+    
+const mechService = async()=>{
         try {
             const response = await axios.get("http://localhost:1102/api/admin/getmechanic",{
                 headers:
@@ -33,21 +34,16 @@ const handlePageChange = ({ selected }) => {
                 setMechanicservice(response.data.data)
             }
         } catch (error) {
+          console.log(error)
             toast.loading("something went wrong")
-        }
-       
+        }  
     }
 
-    useEffect(() => {
-        mechService()
-        mechdetails()
-    }, [])
-    
-    const handleLogout = () => {
+const handleLogout = () => {
         localStorage.removeItem("admintoken")
-      }
+    }
 
-      const mechdetails=async()=>{
+const mechdetails=async()=>{
         try {
           const response = await axios.get("http://localhost:1102/api/admin/mechaniclist",{
             headers:
@@ -55,12 +51,53 @@ const handlePageChange = ({ selected }) => {
               Authorization : "Bearer " + localStorage.getItem("admintoken")
             }
           })
-          console.log(response.data.data,"q")
           setMechaniclist(response.data.data)
         } catch (error) {
           toast.error("something went wrong")
         }
-      }
+    }
+
+const handleDoneStatus = async(status,id)=>{
+  const changeStatus = status.target.value
+  const response = await axios.post(`http://localhost:1102/api/admin/getdone/${id}`,{status:changeStatus},{
+    headers:{
+      Authorization : "Bearer "+ localStorage.getItem("admintoken")
+    }
+  })
+  if(response){
+    setTimeout(()=>{
+      toast.success(response.data.message) //incase if the mechanic changes the done status but the admin's part aint gettin' updated, use the default thingy.
+    },1000)
+   
+  }
+    }
+
+const handleMechanics=async(e,id)=>{
+        try {
+            console.log(id,"qre")
+            const assign = e.target.value
+            console.log(assign,"assign")
+            const response = await axios.post(`http://localhost:1102/api/admin/assignmechanic/${id}`,{status:assign},{
+
+                headers:
+                {
+                  Authorization : "Bearer " + localStorage.getItem("admintoken")
+                }
+              })
+            if(response){
+               toast.success("successfully assigned")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+useEffect(() => {
+    mechService()
+    mechdetails()
+}, [handleDoneStatus])
+
 
   return (
     <>
@@ -88,23 +125,24 @@ const handlePageChange = ({ selected }) => {
         {/* <li key="DOC">Completed on</li> */}
         <li key="action">Status</li>
         </ul>
-    {displayedData.map((e)=>(
-        <ul key="ul2">
-        <li key="name">{e.user.name}</li>
-        <li key="phone">{e.phone}</li>
-        <li key="address">{e.address}</li>
-        <li key="issue">{e.issue}</li>
-        <select onChange={(event)=>{handleMechanics(event,e._id)}}>
+    {displayedData.map((f)=>(
+        <ul key="ulokaybwoi">
+        <li key="name">{f.user.name}</li>
+        <li key="phone">{f.phone}</li>
+        <li key="address">{f.address}</li>
+        <li key="issue">{f.issue}</li>
+        <select onChange={(event)=>{handleMechanics(event,f._id)}}>
+            <option selected disabled>{f.Mechanic_issued?.name}</option>
         {mechanicList.map((e)=>(
-            <option>{e.name}</option> 
+            <option value={e._id} >{e.name}</option> 
             ))}
         </select>
-        <li>{new Date(e.createdAt).toLocaleDateString()}</li>
+        <li>{new Date(f.createdAt).toLocaleDateString()}</li>
         {/* <li>{new Date(e.updatedAt).toLocaleDateString()}</li> */}
         <li key="action">
-        <select>
-            <option>Done</option> 
-            <option>Not done</option> 
+        <select value={f.status} onChange={(event)=>{handleDoneStatus(event,f._id)}}>
+            <option value="done">Done</option> 
+            <option value="not done">Not done</option> 
         </select>
         </li>
         </ul> 

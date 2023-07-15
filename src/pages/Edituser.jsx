@@ -20,6 +20,10 @@ function EditUser() {
   const [showServiceHistoryModal, setShowServiceHistoryModal] = useState(false);
   const [userDetails, setUserDetails] = useState({ name: userData.name });
   const [serviceHistory, setServiceHistory] = useState([]);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [serviceId, setServiceid] = useState([])
+  console.log(serviceId,"hi")
+  // console.log(showConfirmationModal,"suck")
 
   const [pageNumber, setPageNumber] = useState(0);
   const itemsPerPage = 7;
@@ -73,7 +77,7 @@ function EditUser() {
       if (response) {
         console.log(response.data.data);
         setServiceHistory(response.data.data);
-        setShowServiceHistoryModal(true);
+        setShowServiceHistoryModal(true,response.data.data);
       }
     } catch (error) {
       console.log(error);
@@ -81,9 +85,38 @@ function EditUser() {
     }
   };
 
+  const confirm =async()=>{
+    try {
+      setShowConfirmationModal(false)
+      const id = serviceId
+      console.log(id,"id")
+      const cancellation = await axios.post(`http://localhost:1102/api/user/cancellation/${id}`,{
+        headers:{
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      })
+      if(cancellation){
+        toast.success("Cancelled successfully")
+        fetchServiceHistory();
+      }
+    } catch (error) {
+      toast.loading("Something went wrong")
+    }
+  
+  }
+
+  const cancel = async(e,id)=>{
+   const ee = e.target.value
+   const id_service = id
+   console.log(id_service,"service id")
+   setServiceid(id_service)
+    setShowConfirmationModal(true);
+   
+  }
+
   useEffect(() => {
     onSubmit();
-  }, []);
+  }, [confirm]);
 
   const handlePageChange = ({ selected }) => {
     setPageNumber(selected);
@@ -176,6 +209,35 @@ function EditUser() {
             </div>
           </div>
         )}
+      {showConfirmationModal && (
+        <div className="modal">
+            <div className="modal-content">
+              <h2>Confirmation</h2>
+              <p>Are you sure you want to cancel?</p>
+              <button
+                onClick={
+                confirm
+                
+                }
+                //try to pass al the info thru the onclick (i meant the id, hte status whatever requieed tomorpw.)
+                // setShowConfirmationModal(false);
+                
+                >
+              Confirm
+              </button>
+              
+              <button
+                onClick={() => {
+                  // Handle cancellation modal close logic here
+                  setShowConfirmationModal(false);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+      )}
+
 
         {showServiceHistoryModal && (
           <div
@@ -193,17 +255,23 @@ function EditUser() {
                     <th className="px-4 py-2">Address</th>
                     <th className="px-4 py-2">Date & Time</th>
                     <th className="px-4 py-2">Service</th>
+                    <th className="px-4 py-2">Cancellation</th>
                   </tr>
                 </thead>
                 <tbody>
                   {displayedData.map((service) => (
                     <tr key={service.id}>
+                      
+                      <td className="px-4 py-2">{service._id}</td>
                       <td className="px-4 py-2">{service.name}</td>
                       <td className="px-4 py-2">{service.numberplate}</td>
                       <td className="px-4 py-2">{service.phone}</td>
                       <td className="px-4 py-2">{service.address}</td>
                       <td>{new Date(service.updatedAt).toLocaleString()}</td>
                       <td className="px-4 py-2">{service.service}</td>
+                      <button className="px-4 py-2 text-red-600 " onClick={(e)=>{cancel(e,service._id)}}>
+                         Cancel
+                      </button>
                     </tr>
                   ))}
                 </tbody>

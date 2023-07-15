@@ -3,11 +3,11 @@ import "./MechanicService.css"
 import axios from 'axios'
 import jwt_decode from "jwt-decode";
 import ReactPaginate from 'react-paginate';
+import { toast } from 'react-hot-toast';
 
 
 function Mechanichome() {
   const [mechWork, setMechWork] = useState([])
-  console.log(mechWork)
   
   const [pageNumber, setPageNumber] = useState(0);
   const itemsPerPage = 7 ;
@@ -21,20 +21,34 @@ function Mechanichome() {
       const token = localStorage.getItem("mechtoken")
       const tokenId = jwt_decode(token)
       const mechId = tokenId.mechanicid
-      console.log(mechId,"id")
       const works = await axios.get(`http://localhost:1102/api/mechanic/getmechworks/${mechId}`,{
         headers:{
           Authorization : "Bearer " + localStorage.getItem("mechtoken")
         }
       })
       if(works){
-        console.log(works.data.data)
         setMechWork(works.data.data)
       }
     } catch (error) {
       console.log(error)
     }
-    
+  }
+
+  const handleDoneInput=async(e,id)=>{
+    try {
+      const status = e.target.value
+      const response = await axios.post(`http://localhost:1102/api/mechanic/changestatus/${id}`,{status:status},{
+        headers:{
+          Authorization: "Bearer "+localStorage.getItem("mechtoken")
+        }
+        })
+        if(response){
+          toast.success(response.data.message)
+        }
+    } catch (error) {
+      toast.error("Something went wrong")
+    }
+  
   }
   
   const handleLogout = () =>{
@@ -43,7 +57,7 @@ function Mechanichome() {
 
   useEffect(() => {
     mechanicWorks()
-  }, [])
+  }, [handleDoneInput])
   
   return (
     
@@ -62,21 +76,22 @@ function Mechanichome() {
         <li key="address">Address</li>
         <li key="Issues">Issues</li>
         <li key="Io">Issued on</li>
+        <li key="Co">Completed on</li>
         <li key="action">Status</li>
         </ul>
     {displayedData.map((e)=>(
-        <ul key="ulokaybwoi">
+        <ul>
         <li key="name">{e?.name}</li>
         <li key="phone">{e?.phone}</li>
         <li key="address">{e?.address}</li>
         <li key="issue">{e?.issue}</li>
         <li>{new Date(e?.createdAt).toLocaleDateString()}</li>
-        {/* <li>{new Date(e.updatedAt).toLocaleDateString()}</li> */}
+        <li>{new Date(e?.updatedAt).toLocaleDateString()}</li>
         <li key="action">
-        {/* <select onChange={change the status and make sure the admin side is done automatically} > */}
+        <select value={e?.status} onChange={(event)=>{handleDoneInput(event,e?._id)}} >
             <option value="done">Done</option> 
             <option value="not done">Not done</option> 
-        {/* </select> */}
+        </select>
         </li>
         </ul> 
     ))}

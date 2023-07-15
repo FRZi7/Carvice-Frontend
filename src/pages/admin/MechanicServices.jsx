@@ -34,7 +34,7 @@ const mechService = async()=>{
                 setMechanicservice(response.data.data)
             }
         } catch (error) {
-          console.log(error)
+        
             toast.loading("something went wrong")
         }  
     }
@@ -74,9 +74,9 @@ const handleDoneStatus = async(status,id)=>{
 
 const handleMechanics=async(e,id)=>{
         try {
-            console.log(id,"qre")
+            
             const assign = e.target.value
-            console.log(assign,"assign")
+           
             const response = await axios.post(`http://localhost:1102/api/admin/assignmechanic/${id}`,{status:assign},{
 
                 headers:
@@ -88,7 +88,7 @@ const handleMechanics=async(e,id)=>{
                toast.success("successfully assigned")
             }
         } catch (error) {
-            console.log(error)
+            toast.error("Something went wrong")
         }
 
     }
@@ -126,11 +126,11 @@ useEffect(() => {
         <li key="action">Status</li>
         </ul>
     {displayedData.map((f)=>(
-        <ul key="ulokaybwoi">
-        <li key="name">{f.user.name}</li>
-        <li key="phone">{f.phone}</li>
-        <li key="address">{f.address}</li>
-        <li key="issue">{f.issue}</li>
+      <ul>  
+        <li key="f.name">{f.user.name}</li>
+        <li key="f.phone">{f.phone}</li>
+        <li key="f.address">{f.address}</li>
+        <li key="f.issue">{f.issue}</li>
         <select onChange={(event)=>{handleMechanics(event,f._id)}}>
             <option selected disabled>{f.Mechanic_issued?.name}</option>
         {mechanicList.map((e)=>(
@@ -139,7 +139,7 @@ useEffect(() => {
         </select>
         <li>{new Date(f.createdAt).toLocaleDateString()}</li>
         {/* <li>{new Date(e.updatedAt).toLocaleDateString()}</li> */}
-        <li key="action">
+        <li key="f.action">
         <select value={f.status} onChange={(event)=>{handleDoneStatus(event,f._id)}}>
             <option value="done">Done</option> 
             <option value="not done">Not done</option> 

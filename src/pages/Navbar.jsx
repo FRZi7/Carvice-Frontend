@@ -8,7 +8,6 @@ const Navbar = () => {
   const [isLogged, setIsLogged] = useState(false);
   // const userData = useSelector((store) => store.user?.items[0]);
   const userData = useSelector((store)=>store.user?.items)
-  console.log(userData)
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };

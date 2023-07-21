@@ -1,8 +1,9 @@
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
-import axios from 'axios';
+import axios from '../axios/axios';
+
 import Success from './Success';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
@@ -13,31 +14,38 @@ function Bookcarwash() {
   const token = localStorage.getItem("token")
   const decoded = jwt_decode(token)
   const userId = decoded.id
-  console.log(userId,"user")
-  const navigate = useNavigate();
+  
+  const navigate = useNavigate();  
   const [bookCarwash, setBookCarwash] = useState({
     name: '',
     numberplate: '',
     number: '',
     address: '',
     pickup: '',
-    service: '',
-    userid : userId
+    service: [],
+    userid : userId,
+    totalPayment:''
   });
-
   const onSubmit = async (e) => {
     try {
       e.preventDefault();
+      if (bookCarwash.service.length === 0) {
+        toast.error('Please select either Carwash or Car Service');
+        return;
+      }
+     
+      const totalPrice = calculation()
+      setBookCarwash(totalPrice)
+      setBookCarwash({ ...bookCarwash, totalPayment: totalPrice });
       const response = await axios.post(
-        'http://localhost:1102/api/user/service',
-        bookCarwash,
+        '/api/user/service',
+        {bookCarwash},
         {
           headers:{
             Authorization : "Bearer "+ localStorage.getItem("token")
           },
         }
-      );
-      console.log(response, 'sadasdasd');
+        );
       if (response.data.success) {
         toast.success('Booking successful');
         navigate('/success');
@@ -49,9 +57,51 @@ function Bookcarwash() {
     }
   };
 
- 
+  const handleServiceSelection = (e) => {
+    const selectedService = e.target.value;
+    const isChecked = e.target.checked;
+  
+    if (isChecked) {
+      setBookCarwash((prevBookCarwash) => ({
+        ...prevBookCarwash,
+        service: [...prevBookCarwash.service, selectedService], //what this does is, it creates a service array , the, the spread makes a copy from the origiinal value(ahallow copy) and then the selected SERvice is passed into it
+      }));
+    } else {
+      setBookCarwash((prevBookCarwash) => ({
+        ...prevBookCarwash,
+        service: prevBookCarwash.service.filter(
+          (service) => service !== selectedService //chercked allaann indenki, then it is not equal to the serviec, therefore, it is not sent or selected therefore it wont be send to the database
+        ),
+      }));
+    }
+  };
 
+  const prices=(service)=>{
+    if(service === "carwash"){
+      return 200
+    }else if(service === "carservice"){
+      return 500
+    }else{
+      return 0
+    }
+  } 
 
+  const calculation =()=>{
+    let totalPrice = 0
+    bookCarwash.service.forEach((service)=>{
+      const servicePrice = prices(service)
+      totalPrice += servicePrice
+    })
+    return totalPrice
+  }
+
+  useEffect(() => {
+    const totalPrice = calculation();
+    setBookCarwash((prevBookCarwash) => ({
+      ...prevBookCarwash,
+      totalPayment: totalPrice,
+    }));
+  }, [bookCarwash.service]);
   return (
     <>
     <div className="bookingcarname">
@@ -64,7 +114,7 @@ function Bookcarwash() {
         />
         <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
           <h1 className="text-white text-7xl font-bold font-serif">
-            CARWASH BOOKING   
+            BOOKING   
           </h1>
         </div>
       </div>
@@ -187,19 +237,18 @@ function Bookcarwash() {
             </div>
           </div>
           <div className="flex flex-col space-y-4">
-            <h6 className="text-xl">
+            <h6 className="text-xl" >
               <b>Type of Service</b>
             </h6>
-            <div className="flex items-center">
+            <div className="flex items-center" required>
               <input
                 type="checkbox"
                 name="service"
                 id="service-carwash"
                 value="carwash"
                 className="mr-2"
-                onChange={(e) =>
-                  setBookCarwash({ ...bookCarwash, service: e.target.value })
-                }
+               
+                onChange={handleServiceSelection}
               />
               <label htmlFor="service-carwash">Carwash</label>
             </div>
@@ -210,11 +259,13 @@ function Bookcarwash() {
                 id="service-carservice"
                 value="carservice"
                 className="mr-2"
-                onChange={(e) =>
-                  setBookCarwash({ ...bookCarwash, service: e.target.value })
-                }
+                
+                onChange={handleServiceSelection}
               />
               <label htmlFor="service-carservice">Car Service</label>
+            </div>
+            <div>
+            <p>Total Price:{calculation()}</p>
             </div>
             <input type='text' name="userid" id="userid" value={userId} hidden></input>
           </div>

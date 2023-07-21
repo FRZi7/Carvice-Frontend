@@ -10,7 +10,7 @@ function Mechaniclogin() {
   const onSubmit = async(e)=>{
     try {
       e.preventDefault()
-      const response = await axios.post("http://localhost:1102/api/mechanic/mechaniclogin",mechanicLogin)
+      const response = await axios.post("/api/mechanic/mechaniclogin",mechanicLogin)
     if(response){
       toast.success(response.data.message)
       localStorage.setItem("mechtoken",response.data.data)

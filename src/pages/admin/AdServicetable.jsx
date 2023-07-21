@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import "./admintable.css"
-import axios from 'axios'
+import axios from '../../axios/axios'
 import toast from "react-hot-toast"
 import { useNavigate } from 'react-router-dom'
 import ReactPaginate from 'react-paginate';
+
 function AdServiceTable() {
 const [serviceTable, setServicetable] = useState([])
-const [Status, setstatus] = useState("")
-
+const [Status, setstatus] = useState("Not done")
+const [done,setServicedone] = useState("")
 
 
     const [pageNumber, setPageNumber] = useState(0);
@@ -18,13 +19,14 @@ const [Status, setstatus] = useState("")
     const displayedData = serviceTable.slice(startIndex, endIndex);
     const navigate = useNavigate()
 
+
     const handlePageChange = ({ selected }) => {
         setPageNumber(selected);
       };
+
     const service = async(e)=>{
-        try {
-            
-            const response = await axios.get("http://localhost:1102/api/admin/servicetable",{
+        try {            
+            const response = await axios.get(`/api/admin/servicetable`,{
               headers:
               {
                 Authorization : "Bearer " + localStorage.getItem("admintoken")
@@ -45,19 +47,18 @@ const [Status, setstatus] = useState("")
     const handleStatusUpdate=async(e,id)=>{
         const status = e.target.value
         console.log(status,"statat")
-        const response =await axios.post(`http://localhost:1102/api/admin/updateservicetable/${id}`,{status:status},{
+        const response =await axios.post(`/api/admin/updateservicetable/${id}`,{status:status},{
           headers:
           {
             Authorization : "Bearer " + localStorage.getItem("admintoken")
           }
         })
         if(response){
-            console.log(response.data.data,"sa")
+          toast.success("Updated Successfully")
             setstatus(response.data.data)
+            service()
         }
     }
-
-
 
     const handleLogout =()=>{
         localStorage.removeItem("admintoken")
@@ -65,7 +66,7 @@ const [Status, setstatus] = useState("")
 
     useEffect(() => {
       service()
-    }, [handleStatusUpdate])
+    }, [])
 
   return (
   <>
@@ -89,6 +90,7 @@ const [Status, setstatus] = useState("")
         <li key="address">Address</li>
         <li key="DOJ">Date</li>
         <li key="DOn">Completed on</li>
+        <li key="action">Amount</li>
         <li key="action">Status</li>
         
       </ul>
@@ -96,13 +98,14 @@ const [Status, setstatus] = useState("")
 {displayedData.map((e)=>(
       <ul >
          {/* <li key="name">{e.user[0].name} </li> */}
-        <li key="numberplate">{e.user.name}</li>
-        <li key="phone">{e.phone}</li>
-        <li key="address">{e.address}</li>
-        <li key="Service">{e.service}</li>
-       <td>{new Date(e.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-       <td>{new Date(e.updatedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-       <select value={e.status} onChange={(event)=>{handleStatusUpdate(event,e._id)}}>
+        <li data-label="Name"  key="numberplate">{e?.name}</li>
+        <li data-label="Phone"  key="phone">{e?.phone}</li>
+        <li data-label="Address"  key="address">{e?.address}</li>
+        <li data-label="Service"  key="Service">{e?.service}</li>
+       <li  data-label="Created on" >{new Date(e?.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</li>
+       <li data-label="Completed on" > &emsp; {new Date(e?.updatedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</li>
+        <li data-label="Total amount"  key="Service">{e?.totalamount}</li>
+       <select value={e?.status} onChange={(event)=>{handleStatusUpdate(event,e._id)}}>
             <option value="not done">Not Done</option>
             <option value="done">Done</option>
         </select>

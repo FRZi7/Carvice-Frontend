@@ -3,21 +3,21 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import jwt_decode from "jwt-decode"
-import axios from 'axios';
+import axios from '../axios/axios';
 import Footer from './Footer';
 
 function Bookmechanic() {
     const token = localStorage.getItem("token")
     const decoded = jwt_decode(token)
     const userid = decoded.id
-    console.log(userid)
+
     const navigate = useNavigate()
     const [mechanicData,setMechanicdata] = useState({name:"",carname:"",number:"",address:"",userid:userid})
-    console.log(mechanicData,"data reached")
+  
     const onSubmit = async(e)=>{
     try {
       e.preventDefault()
-        const response = await axios.post("http://localhost:1102/api/user/mechanic",mechanicData,{
+        const response = await axios.post("/api/user/mechanic",mechanicData,{
           headers:{
             Authorization : "Bearer "+ localStorage.getItem("token")
           },
@@ -33,7 +33,6 @@ function Bookmechanic() {
         }
     }
    catch (error) {
-        console.log(error)
         toast.error("something went wrong")
     }
   }

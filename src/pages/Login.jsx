@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../axios/axios';
 import React, { useState } from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import { toast } from 'react-hot-toast'
@@ -14,9 +14,8 @@ function Login() {
   const onSubmit =async(e)=>{
     e.preventDefault()
     try {
-      const response = await axios.post("http://localhost:1102/api/user/login",logindata)
+      const response = await axios.post("/api/user/login",logindata)
       if(response.data.success){
-        console.log(response.data.user,"gfdi")
         toast.success("login success")
         localStorage.setItem("token",response.data.data)
         dispatch(addUsers(response.data.user))

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import "./MechanicService.css"
-import axios from 'axios'
+import axios from '../../axios/axios'
 import jwt_decode from "jwt-decode";
 import ReactPaginate from 'react-paginate';
 import { toast } from 'react-hot-toast';
@@ -8,20 +8,21 @@ import { toast } from 'react-hot-toast';
 
 function Mechanichome() {
   const [mechWork, setMechWork] = useState([])
-  
   const [pageNumber, setPageNumber] = useState(0);
   const itemsPerPage = 7 ;
   const pageCount = Math.ceil(mechWork.length / itemsPerPage);
   const startIndex = pageNumber * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const displayedData = mechWork.slice(startIndex, endIndex);
+
+ 
   
   const mechanicWorks = async(e)=>{
     try {
       const token = localStorage.getItem("mechtoken")
       const tokenId = jwt_decode(token)
       const mechId = tokenId.mechanicid
-      const works = await axios.get(`http://localhost:1102/api/mechanic/getmechworks/${mechId}`,{
+      const works = await axios.get(`/api/mechanic/getmechworks/${mechId}`,{
         headers:{
           Authorization : "Bearer " + localStorage.getItem("mechtoken")
         }
@@ -30,14 +31,29 @@ function Mechanichome() {
         setMechWork(works.data.data)
       }
     } catch (error) {
-      console.log(error)
+      toast.loading("something went wrong")
     }
   }
+
+  const handlePaymentInput = async (e, id) => {
+    try {
+      if (e.keyCode === 13) {
+        const payment = e.target.value;
+        const amount = await axios.post(`/api/mechanic/amount/${id}`,{amount:payment})
+        if(amount){
+          toast.success("amount updated")
+        }
+      }
+    } catch (error) {
+      toast.loading("Something went wrong")
+    }
+    
+  };
 
   const handleDoneInput=async(e,id)=>{
     try {
       const status = e.target.value
-      const response = await axios.post(`http://localhost:1102/api/mechanic/changestatus/${id}`,{status:status},{
+      const response = await axios.post(`/api/mechanic/changestatus/${id}`,{status:status},{
         headers:{
           Authorization: "Bearer "+localStorage.getItem("mechtoken")
         }
@@ -48,7 +64,6 @@ function Mechanichome() {
     } catch (error) {
       toast.error("Something went wrong")
     }
-  
   }
   
   const handleLogout = () =>{
@@ -69,27 +84,35 @@ function Mechanichome() {
     <a href="/mechanic/login" onClick={handleLogout}>Logout</a>
     </div> 
     <div className="content">
-        <div className="list " key="list">
+        <div className="list " key="liss ">
         <ul key="ul">
-        <li key="name">Name</li>
+        <li key="x">Name</li>
         <li key="phone">Phone</li>
         <li key="address">Address</li>
         <li key="Issues">Issues</li>
         <li key="Io">Issued on</li>
-        <li key="Co">Completed on</li>
+        <li key="Com">Completed on</li>
+        <li key="Co">Payment</li>
         <li key="action">Status</li>
         </ul>
     {displayedData.map((e)=>(
         <ul>
-        <li key="name">{e?.name}</li>
-        <li key="phone">{e?.phone}</li>
-        <li key="address">{e?.address}</li>
-        <li key="issue">{e?.issue}</li>
+        <li key="ename">{e?.name}</li>
+        <li key="ephone">{e?.phone}</li>
+        <li key="eaddress">{e?.address}</li>
+        <li key="eissue">{e?.issue}</li>
         <li>{new Date(e?.createdAt).toLocaleDateString()}</li>
         <li>{new Date(e?.updatedAt).toLocaleDateString()}</li>
-        <li key="action">
+        <li key="epayment">
+          <input
+          type='number'
+          defaultValue={e?.payment}
+          onKeyDown={(event) => handlePaymentInput(event, e._id)}
+          />
+        </li>
+        <li key="eaction">
         <select value={e?.status} onChange={(event)=>{handleDoneInput(event,e?._id)}} >
-            <option value="done">Done</option> 
+            <option value="edone">Done</option> 
             <option value="not done">Not done</option> 
         </select>
         </li>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../axios/axios';
 
 function Registration(){
   const [registerdata, setRegisterdata] = useState({name:"",email:"",password:"",phone:"",cpassword:""})
@@ -10,8 +10,7 @@ function Registration(){
   const onSubmit = async(e)=>{
       try {
         e.preventDefault()
-        console.log(registerdata,"hi")
-        const response = await axios.post("http://localhost:1102/api/user/register",registerdata)
+        const response = await axios.post("/api/user/register",registerdata)
       if(response.data.success){
         toast.success(response.data.message)
         navigate("/otp")
@@ -19,7 +18,7 @@ function Registration(){
         toast.error(response.data.message)  
       }
     } catch (error) {
-      console.log(error)
+    
       toast.error("Something went wrong")
     }
     }

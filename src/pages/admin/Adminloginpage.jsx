@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import axios from 'axios'
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-
+import axios from '../../axios/axios'
 
 function Adminloginpage() {
     const navigate = useNavigate()
@@ -11,7 +10,7 @@ function Adminloginpage() {
     const onSubmit = async(e)=>{
         try {
             e.preventDefault()
-            const response = await axios.post("http://localhost:1102/api/admin/adminlogin",adminDetails)
+            const response = await axios.post("/api/admin/adminlogin",adminDetails)
         if(response.data.success){
             toast.success("Admin logged in")
             localStorage.setItem("admintoken",response.data.data)

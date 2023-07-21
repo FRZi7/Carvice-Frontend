@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react'
 import "./admintable.css"
-import axios from 'axios'
+import axios from '../../axios/axios'
 import toast from "react-hot-toast"
 // import "./AdminMechanicList.css"
 import ReactPaginate from 'react-paginate';
@@ -32,7 +32,7 @@ const handleCloseModal = () => {
 
 const blockmechanic = async()=>{
   try {
-      const response = await axios.post("http://localhost:1102/api/admin/mechanicblock",mechanicList)
+      const response = await axios.post("/api/admin/mechanicblock",mechanicList)
       if(response){
         toast.success(response.data.message)
       }else{
@@ -47,7 +47,7 @@ const blockmechanic = async()=>{
 
 const mechdetails=async()=>{
   try {
-    const response = await axios.get("http://localhost:1102/api/admin/mechaniclist",{
+    const response = await axios.get("/api/admin/mechaniclist",{
       headers:
       {
         Authorization : "Bearer " + localStorage.getItem("admintoken")
@@ -64,7 +64,7 @@ const mechdetails=async()=>{
 
 const onSubmit =async(e)=>{
   try {
-    const response = await axios.post("http://localhost:1102/api/admin/mechanicedit",singleMechanic,{
+    const response = await axios.post("/api/admin/mechanicedit",singleMechanic,{
       headers:
       {
         Authorization : "Bearer " + localStorage.getItem("admintoken")
@@ -214,7 +214,7 @@ const handleLogout = () => {
          <li key={mechanic.phone}>{mechanic.phone}</li>
          <li key={mechanic.assign}>{mechanic.address}</li>
          <td>{new Date(mechanic.updatedAt).toLocaleString()}</td> 
-         <li data-label="Tutor" className='space-x-2'>
+         <li data-label="  " className='space-x-2'>
          {/* <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">Edit</button>   */}
          <button
                 type="button"

@@ -12,7 +12,7 @@ import Footer from './Footer'
 function Home() { 
   return (
     <>
-      <div className='h-screen w-screen'>
+      <div className='h-screen w-screen' >
       <div className=" h-screen w-full bg-center bg-cover" style={{ backgroundImage: 'url("img/melih-karaahmet-Tkz9YXDn3FY-unsplash.jpg")' }}>
         <Navbar/>
         <Body/>
@@ -21,7 +21,7 @@ function Home() {
        </div>
       </div>
       <div id='carwash'>
-       <div className='h-screen w-fit bg-gradient-to-r from-black to-slate-950'>
+       <div className='h-screen w-screen bg-gradient-to-r from-black to-slate-950'>
           <Body2/>
        </div>
        <div className='h-screen w-screen overflow-hidden bg-gradient-to-r from-black to-slate-950'>

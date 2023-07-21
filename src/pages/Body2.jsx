@@ -30,11 +30,11 @@ function Body2() {
   }, []);
 
   return (
-    <div className="flex flex-col ">
+    <div className="w-screen">
       <a href="/">
         <div className="w-screen relative">
           <video
-            className="object-cover w-fit h-screen md:w-full transition-all"
+            className="object-cover h-screen md:w-full transition-all"
             autoPlay
             muted
             loop

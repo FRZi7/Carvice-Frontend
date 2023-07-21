@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
-  // const userData = useSelector((store) => store.user?.items[0]);
   const userData = useSelector((store)=>store.user?.items)
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -27,7 +26,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-screen relative z-50 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg  ">
+    <nav className="w-scree relative z-50 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg ">
       <div className="max-w-screen mx-auto px-6 sm:px-48 lg:px-48">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -52,7 +51,7 @@ const Navbar = () => {
                   href="#"
                   className="text-black-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition delay-150 duration-150 ease-in-out"
                 >
-                  Services
+                  About Us
                 </a>
                 {isLogged ? (
                   <div className="relative inline-block text-left">
@@ -93,8 +92,9 @@ const Navbar = () => {
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                             role="menuitem"
                           >
-                            Account Settings
+                            Account Settings & payments
                           </a>
+                         
                           <button
                             onClick={logout}
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left"

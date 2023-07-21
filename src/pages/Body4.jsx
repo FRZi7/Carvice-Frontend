@@ -7,14 +7,7 @@ function Body2() {
     <div className="flex flex-col ">
       <a href="/">
         <div className="w-screen relative">
-          <video
-            className="object-cover w-fit h-screen md:w-full transition-all"
-            autoPlay
-            muted
-            loop
-          >
-            <source src="\img\production_id_4488736 (2160p).mp4" type="video/mp4" />
-          </video>
+          <img src='\img\bert-b-3iv6ABEb3yU-unsplash.jpg'  className="object-cover w-fit h-screen md:w-full transition-all"/>
           <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center" ref={textRef}>
             <h2 className="text-xl md:text-2xl mx-4 md:mx-10 font-serif">
               OUR MECHANIC

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../axios/axios';
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -12,10 +12,8 @@ const Otp = () => {
 const onSubmit=async(e)=>{
     e.preventDefault();
     try {
-        const response = await axios.get(`http://localhost:1102/api/user/sendotp/${otp}`)
-        console.log(response,"hfqdqhyqqq")
+        const response = await axios.get(`/api/user/sendotp/${otp}`)
         if(response){
-          console.log(response,"asdasdasdasdasdasd")
             toast.success("User registered")
             navigate("/login")
         }else{

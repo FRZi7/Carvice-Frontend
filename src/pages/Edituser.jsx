@@ -2,28 +2,32 @@ import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import jwtDecode from 'jwt-decode';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
+import axios from '../axios/axios';
 import { toast } from 'react-hot-toast';
 import { addUsers } from './redux/userSlice';
 import Footer from './Footer';
 import ReactPaginate from 'react-paginate';
+import useRazorpay from "react-razorpay";
 import "./Edituser.css"
-function EditUser() {
+import { useNavigate } from 'react-router-dom';
 
+function EditUser() {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const token = localStorage.getItem('token');
   const decoded = jwtDecode(token);
   const userid = decoded.id;
   const userData = useSelector((store) => store.user?.items);
+  const [Razorpay] = useRazorpay();
 
   const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const [showServiceHistoryModal, setShowServiceHistoryModal] = useState(false);
   const [userDetails, setUserDetails] = useState({ name: userData.name });
   const [serviceHistory, setServiceHistory] = useState([]);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [serviceId, setServiceid] = useState([])
-  console.log(serviceId,"hi")
-  // console.log(showConfirmationModal,"suck")
+  const [showServiceHistoryModal, setShowServiceHistoryModal] = useState(false);
+  const [showMechanicHistoryModal, setshowMechanicHistoryModal] = useState(false);
+  const [mechanicHistory, setMechanicHistory] = useState([])
 
   const [pageNumber, setPageNumber] = useState(0);
   const itemsPerPage = 7;
@@ -32,23 +36,24 @@ function EditUser() {
   const endIndex = startIndex + itemsPerPage;
   const displayedData = serviceHistory.slice(startIndex, endIndex);
 
-  
-
   const handleShowDetailsModal = () => {
     setShowDetailsModal(true);
   };
   const handleShowServiceHistoryModal = () => {
     setShowServiceHistoryModal(true);
+    setshowMechanicHistoryModal(true)
   };
   const handleCloseModal = () => {
     setShowDetailsModal(false);
     setShowServiceHistoryModal(false);
+    setshowMechanicHistoryModal(false)
+    
   };
 
-  const onSubmit = async (e) => {
+  const onSubmit = async(e) => {
     try {
       const response = await axios.post(
-        'http://localhost:1102/api/user/edituser',
+        '/api/user/edituser',
         userDetails,
         {
           headers: {
@@ -62,35 +67,49 @@ function EditUser() {
         toast.error('Edit failure');
       }
     } catch (error) {
-      console.log(error);
       toast.error('Something went wrong');
     }
   };
 
   const fetchServiceHistory = async () => {
     try {
-      const response = await axios.get(`http://localhost:1102/api/user/servicehistory`, {
+      const response = await axios.get(`/api/user/servicehistory`, {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('token'),
         },
       });
       if (response) {
-        console.log(response.data.data);
         setServiceHistory(response.data.data);
         setShowServiceHistoryModal(true,response.data.data);
       }
     } catch (error) {
-      console.log(error);
       toast.error('Failed to fetch service history');
+    }
+  };
+
+  
+  const fetchMechanicHistory = async () => {
+    try {
+      const history = await axios.get(`/api/user/mechanichistory`, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token'),
+        },
+      });
+      if (history) {
+        setMechanicHistory(history.data.data);
+        setshowMechanicHistoryModal(true,history.data.data);
+      }
+    } catch (error) {
+     
+      toast.error('Failed to fetch history');
     }
   };
 
   const confirm =async()=>{
     try {
-      setShowConfirmationModal(false)
+      setShowConfirmationModal(false);
       const id = serviceId
-      console.log(id,"id")
-      const cancellation = await axios.post(`http://localhost:1102/api/user/cancellation/${id}`,{
+      const cancellation = await axios.post(`/api/user/cancellation/${id}`,{},{
         headers:{
           Authorization: "Bearer " + localStorage.getItem("token")
         }
@@ -102,17 +121,95 @@ function EditUser() {
     } catch (error) {
       toast.loading("Something went wrong")
     }
-  
   }
 
   const cancel = async(e,id)=>{
    const ee = e.target.value
    const id_service = id
-   console.log(id_service,"service id")
    setServiceid(id_service)
     setShowConfirmationModal(true);
-   
   }
+
+ const handlePayment = async (amount,id) => {
+   const options = {
+     key: "rzp_test_GJjSkE5HCfYrlI",
+     amount: amount*100, 
+     currency: "INR",
+     name: "CARVICE",
+     description: "Service Transaction",
+     image: "/img/logo-color-modified.png",
+     handler: async function (response) {
+       if(response.razorpay_payment_id){
+        const order = await axios.post(`/api/user/payment/${id}`,{amount:amount,paymentId:response.razorpay_payment_id});
+        window.location.reload()
+      }else{
+        toast.error("Payment failed")
+      };
+      },
+      prefill: {
+        name: "CARVICE",
+        email: "carvice@gmail.com",
+        contact: "8921111685",
+      },
+      notes: {
+        address: "Carvice Corporate Office",
+      },
+      theme: {
+        color: "#FF0000",
+      },
+    };
+  
+    const rzp1 = new Razorpay(options);
+  
+    rzp1.on("payment.failed", function (response) {
+   toast.error("Payment failed")
+    });
+  
+    rzp1.open();
+  };
+ const handlePaymentofservice = async (amount,id) => {
+   const options = {
+     key: "rzp_test_GJjSkE5HCfYrlI",
+     amount: amount*100, 
+     currency: "INR",
+     name: "CARVICE",
+     description: "Service",
+     image: "/img/logo-color-modified.png",
+  
+     handler: async function (response) {
+       if(response.razorpay_payment_id){
+        const order = await axios.post(`/api/user/paymentofservice/${id}`,{amount:amount,paymentId:response.razorpay_payment_id});
+        (response)
+        window.location.reload()
+      }else{
+        toast.error("Payment failed")
+      };
+      },
+      prefill: {
+        name: "Carvice",
+        email: "carvice@gmail.com",
+        contact: "8921111685",
+      },
+      notes: {
+        address: "Carvice Corporate Office",
+      },
+      theme: {
+        color: "#FF0000",
+      },
+    };
+  
+    const rzp1 = new Razorpay(options);
+  
+    rzp1.on("payment.failed", function (response) {
+   toast.error("Payment failed")
+    });
+  
+    rzp1.open();
+  };
+
+
+
+
 
   useEffect(() => {
     onSubmit();
@@ -147,7 +244,16 @@ function EditUser() {
                 onClick={fetchServiceHistory}
                 className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md w-full"
               >
-                View Service History
+                View Service History & payment
+              </button>
+            </div>
+            <div className="mb-4">
+              <button
+                type="button"
+                onClick={fetchMechanicHistory}
+                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md w-full"
+              >
+                View Mechnanic History & payment
               </button>
             </div>
           </div>
@@ -215,13 +321,7 @@ function EditUser() {
               <h2>Confirmation</h2>
               <p>Are you sure you want to cancel?</p>
               <button
-                onClick={
-                confirm
-                
-                }
-                //try to pass al the info thru the onclick (i meant the id, hte status whatever requieed tomorpw.)
-                // setShowConfirmationModal(false);
-                
+                onClick={confirm}
                 >
               Confirm
               </button>
@@ -239,7 +339,7 @@ function EditUser() {
       )}
 
 
-        {showServiceHistoryModal && (
+        {showServiceHistoryModal &&(
           <div
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
             style={{ transition: 'opacity 0.3s' }}
@@ -255,23 +355,105 @@ function EditUser() {
                     <th className="px-4 py-2">Address</th>
                     <th className="px-4 py-2">Date & Time</th>
                     <th className="px-4 py-2">Service</th>
+                    <th className="px-4 py-2">Amount</th>
+                    <th className="px-4 py-2">Payment</th>
+                    <th className="px-4 py-2">Status</th>
                     <th className="px-4 py-2">Cancellation</th>
+                    
                   </tr>
                 </thead>
                 <tbody>
                   {displayedData.map((service) => (
-                    <tr key={service.id}>
-                      
-                      <td className="px-4 py-2">{service._id}</td>
+                    <tr>
                       <td className="px-4 py-2">{service.name}</td>
                       <td className="px-4 py-2">{service.numberplate}</td>
                       <td className="px-4 py-2">{service.phone}</td>
                       <td className="px-4 py-2">{service.address}</td>
                       <td>{new Date(service.updatedAt).toLocaleString()}</td>
-                      <td className="px-4 py-2">{service.service}</td>
-                      <button className="px-4 py-2 text-red-600 " onClick={(e)=>{cancel(e,service._id)}}>
+                      <td className="px-4 py-2">{service.service[0]} &nbsp; {service.service[1]}</td>
+                      <td className="px-4 py-2">₹{service.totalamount}</td>
+                      
+                      {/*here below, with the help of the so displayed Data, try thp find the rgiht amount and the id to pass it to the razorpay pay thingy*/}
+                      {service.paymentStatus === "paid"? 
+                      <button className="bg-slate-500 text-white font-bold py-1 px-4 border border-slate-700 rounded"  onClick={()=>{handlePaymentofservice(service.totalamount,service._id)}} disabled>Paid</button>:
+                      <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 border border-red-700 rounded" onClick={()=>{handlePaymentofservice(service.totalamount,service._id)}}>Pay Now</button>
+                       }
+                      <td className="px-4 py-2">{service.paymentStatus}</td>
+                      {service.paymentStatus === "paid"? 
+                      <button className="px-4 py-1 bg-slate-500 hover:bg-sate-700 text-white font-bold border border-slate-700 rounded" disabled>
                          Cancel
+                      </button>:
+                      <button className="px-4 py-1 bg-blue-500 hover:bg-blue-700 text-white font-bold border border-blue-700 rounded"  onClick={(e)=>{cancel(e,service._id)}}>
+                        Cancel
                       </button>
+                      }
+                    </tr>
+                      ))}
+                </tbody>
+              </table>
+              <div className="flex justify-center ">
+                <ReactPaginate
+                  previousLabel={'<'}
+                  nextLabel={'>'}
+                  pageCount={pageCount}
+                  onPageChange={({ selected }) => setPageNumber(selected)}
+                  containerClassName={'pagination'}
+                  previousLinkClassName={'pagination__link'}
+                  nextLinkClassName={'pagination__link'}
+                  disabledClassName={'pagination__link--disabled'}
+                  activeClassName={'pagination__link--active'}
+                 
+                />
+              </div>
+              <div className="flex justify-center  mt-5" >
+                <button
+                  type="button"
+                  onClick={handleCloseModal}
+                  className="text-blue-500 hover:text-blue-600 font-semibold"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        {showMechanicHistoryModal && (
+          <div
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+            style={{ transition: 'opacity 0.3s' }}
+          >
+            <div className="w-fit bg-white rounded-lg shadow-md p-6">
+              <h2 className="text-2xl font-bold text-slate-950 mb-4 text-center">Service History</h2>
+              <table className="w-full">
+                <thead>
+                  <tr>
+                    <th className="px-4 py-2">Name</th>
+                    <th className="px-4 py-2">Number Plate</th>
+                    <th className="px-4 py-2">Phone</th>
+                    <th className="px-4 py-2">Address</th>
+                    <th className="px-4 py-2">Issued on</th>
+                    <th className="px-4 py-2">Issue</th>
+                    <th className="px-4 py-2">Amount</th>
+                    <th className="px-4 py-2">Status</th>
+                    <th className="px-4 py-2">Options</th>
+
+
+                  </tr>
+                </thead>
+                <tbody>
+                  {mechanicHistory.map((service) => (
+                    <tr key={service.id}>
+                      <td className="px-4 py-2">{service.name}</td>
+                      <td className="px-4 py-2">{service.numberplate}</td>
+                      <td className="px-4 py-2">{service.phone}</td>
+                      <td className="px-4 py-2">{service.address}</td>
+                      <td className='px-4 py-2'>{new Date(service.updatedAt).toLocaleDateString()}</td>
+                      <td className="px-4 py-2">{service.issue}</td>
+                      <td className="px-4 py-2">₹{service.amount}</td>
+                      <td className="px-4 py-2">{service.payment_status}</td>
+                      {service.payment_status==="paid"?(
+                      <button className=" bg-slate-500  text-white font-bold py-1 px-4 border border-slate-500 rounded" disabled>Paid</button>
+                      ): <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 border border-red-700 rounded" onClick={()=>{handlePayment(service.amount,service._id)}}>Pay Now</button>}
                     </tr>
                   ))}
                 </tbody>

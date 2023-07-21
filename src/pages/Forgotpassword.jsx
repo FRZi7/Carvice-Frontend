@@ -2,8 +2,8 @@ import React from 'react'
 
 function Forgotpassword() {
   return (
-    <div>Forgotpassword?
-        nannayi
+    <div>
+        .....place under construction
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../axios/axios'
 import React, { useEffect, useState } from 'react'
 import toast from "react-hot-toast"
 import ReactPaginate from 'react-paginate';
@@ -15,22 +15,21 @@ function AdminUserList() {
       
     const [pageNumber, setPageNumber] = useState(0);
     const itemsPerPage = 7 ;
-    const pageCount = Math.ceil( userInfo / itemsPerPage);
+    const pageCount = Math.ceil( userInfo.length / itemsPerPage);
     const startIndex = pageNumber * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const displayedData = userInfo.slice(startIndex, endIndex);
+    console.log(displayedData,"displa")
     
     const userDetails =async()=>{
         try {
-            const response = await axios.get("http://localhost:1102/api/admin/userdetails",{
+            const response = await axios.get("/api/admin/userdetails",{
               headers:
               {
                 Authorization : "Bearer " + localStorage.getItem("admintoken")
               }
             })
-        if(response){
-            console.log(response.data.data)
-            toast.success(response.data.message)
+        if(response){ 
             setUserinfo(response.data.data)
     
         }else{
@@ -49,7 +48,7 @@ function AdminUserList() {
     
     const userBlock = async()=>{
       try {
-        const response = await axios.post("http://localhost:1102/api/admin/block",userInfo,{
+        const response = await axios.post("/api/admin/block",userInfo,{
           headers:
           {
             Authorization : "Bearer " + localStorage.getItem("admintoken")
@@ -65,13 +64,36 @@ function AdminUserList() {
       }
     }
 
+    const userUnblock =async(id)=>{
+      try {
+        const response = await axios.post(`/api/admin/userunblock/${id}`,{
+        headers:
+        {
+          Authorization : "Bearer " + localStorage.getItem("admintoken")
+        }
+      })
+      if(response){
+        toast.success("successfully unblocked")
+      }
+      } catch (error) {
+        console.log(error)
+        toast.loading("something went wrong")
+      }
+    }
+
     useEffect(() => {
         userDetails()
     }, [])
+
+    
     
 const handleBlockingUser=(data)=>{
   userBlock(data)
 } 
+
+const handleUnblockingUser = (id)=>{
+  userUnblock(id)
+}
     
   return (
     <>
@@ -90,27 +112,28 @@ const handleBlockingUser=(data)=>{
     <div className="content">
     <div className="list " key="list">
       <ul key="ul">
-         <li key="name">Name</li>
-        <li key="email">Email </li>
-        <li key="phone">Phone</li>
-        <li key="date">Date of joining</li>
-        <li key="action">Actions</li>
+         <li  key="name">Name</li>
+        <li data-label="Name" key="email">Email </li>
+        <li data-label="Name" key="phone">Phone</li>
+        <li data-label="Name" key="date">Date of joining</li>
+        <li data-label="Name" key="action">Actions</li>
       </ul>
       
     {displayedData.map((user)=>(
       <ul>
-         <li key="name">{user.name}</li>
-         <li key="email">{user.email}</li>
-         <li key="phone">{user.phone}</li>
-         <td>{new Date(user.updatedAt).toLocaleString()}</td> 
-         <li data-label="Tutor" className='space-x-2'>
-         <button
-                type="button"
-                onClick={()=> handleBlockingUser(user)}
-                className="g-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded "
-              >
-                Block
-              </button>
+         <li data-label="Name" key="name">{user.name}</li>
+         <li data-label="Email" key="email">{user.email}</li>
+         <li data-label="Phone" key="phone">{user.phone}</li>
+         <li data-label="Update">{new Date(user.updatedAt).toLocaleString()}</li> 
+         <li data-label="" className='space-x-2'>
+          {user.access === true ? 
+          <button type="button" onClick={()=> handleBlockingUser(user)}
+          className="g-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded ">Block</button>
+          :
+          <button type="button" onClick={()=> handleUnblockingUser(user._id)}
+          className="g-transparent hover:bg-slate-500 text-white-700 font-semibold hover:text-white py-2 px-4 border border-slate-500 hover:border-transparent rounded ">Unblock</button> 
+          }
+         
       
          </li>
          </ul>

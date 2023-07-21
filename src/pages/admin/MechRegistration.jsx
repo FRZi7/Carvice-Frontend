@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../axios/axios'
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ const MechRegistration = () => {
     const onSubmit=async(e)=>{
         try {
             e.preventDefault()
-            const response = await axios.post("http://localhost:1102/api/admin/mechanicregistration",mechRegistration)
+            const response = await axios.post("/api/admin/mechanicregistration",mechRegistration)
             if(response){
                 toast.success(response.data.message)
                 navigate("/admin/mechanics")

@@ -5,7 +5,6 @@ function Body2() {
   const textRef = useRef(null);
   return (
     <div className="flex flex-col ">
-      <a href="/">
         <div className="w-screen relative">
           <img src='\img\bert-b-3iv6ABEb3yU-unsplash.jpg'  className="object-cover w-fit h-screen md:w-full transition-all"/>
           <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center" ref={textRef}>
@@ -31,7 +30,7 @@ function Body2() {
             </div>
           </div>
         </div>
-      </a>
+      
     </div>
   );
 }

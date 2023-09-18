@@ -423,7 +423,7 @@ function EditUser() {
             style={{ transition: 'opacity 0.3s' }}
           >
             <div className="w-fit bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-bold text-slate-950 mb-4 text-center">Service History</h2>
+              <h2 className="text-2xl font-bold text-slate-950 mb-4 text-center">Mechanic History</h2>
               <table className="w-full">
                 <thead>
                   <tr>

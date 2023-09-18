@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../../axios/axios'
 import React, { useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 function Mechaniclogin() {
   const navigate = useNavigate()
   const[mechanicLogin,setMechaniclogin] = useState({email:"", password:""})
+  console.log(mechanicLogin,"po")
 
   const onSubmit = async(e)=>{
     try {
@@ -22,7 +23,7 @@ function Mechaniclogin() {
       toast.error("Unsuccessful")
     }
     } catch (error) {
-      console.log(error)
+      console.log(error.message)
       toast.error("something went wrong")
     } 
   }

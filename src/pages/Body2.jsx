@@ -30,8 +30,8 @@ function Body2() {
   }, []);
 
   return (
-    <div className="w-screen">
-      <a href="/">
+    <div className="w-screen" >
+      
         <div className="w-screen relative">
           <video
             className="object-cover h-screen md:w-full transition-all"
@@ -64,7 +64,7 @@ function Body2() {
             </div>
           </div>
         </div>
-      </a>
+      
     </div>
   );
 }

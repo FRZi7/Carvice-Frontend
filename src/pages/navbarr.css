@@ -1,8 +1,11 @@
-
+body{
+  /* margin: 0px; */
+  overflow-x: hidden;
+}
   
   .navimg {
-    margin: 10px;
+
+    /* margin: px; */
     height: 7rem;
-    width: 7rem;
-    overflow-x: hidden
+    /* overflow-x: auto !important */
   }

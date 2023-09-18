@@ -1,13 +1,13 @@
 .sidebar {
-    margin: 0;
-    padding-top: 1rem;
-    width: 256px;
-    background-color: rgb(31 41 55);
-    position: fixed;
-    height: 100%;
-    overflow: hidden;
-    top: 0px; 
-    left: 0; 
+  margin: 0;
+  padding-top: 1rem;
+  width: 256px;
+  background-color: rgb(31 41 55);
+  position: fixed;
+  height: 100%;
+  overflow: auto !important;
+  top: 0px;
+  left: 0;
   }
   
 .sidebar p{
@@ -43,8 +43,7 @@
   
   @media screen and (max-width: 700px) {
     .sidebar p{
-        margin:10px;
-        
+        margin:10px;  
     }
 
     .sidebar {
@@ -52,6 +51,7 @@
       height: 100px;
       /* position: ; */
       padding-top: 1px;
+
     }
     .sidebar a {
       float: left;
@@ -72,8 +72,6 @@
     }
  
   }
-  
-  
   
   .list ul:nth-child(odd) {
     background-color:#ddd;

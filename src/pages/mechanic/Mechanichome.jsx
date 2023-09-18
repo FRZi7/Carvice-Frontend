@@ -19,6 +19,7 @@ function Mechanichome() {
   
   const mechanicWorks = async(e)=>{
     try {
+      
       const token = localStorage.getItem("mechtoken")
       const tokenId = jwt_decode(token)
       const mechId = tokenId.mechanicid
@@ -106,6 +107,7 @@ function Mechanichome() {
         <li key="epayment">
           <input
           type='number'
+          placeholder='0000'
           defaultValue={e?.payment}
           onKeyDown={(event) => handlePaymentInput(event, e._id)}
           />

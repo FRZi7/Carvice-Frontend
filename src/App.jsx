@@ -26,6 +26,7 @@ import PublicMechRoute from "./components/PublicMechRoute"
 import AdServiceTable from "./pages/admin/AdServicetable"
 import MechanicServices from "./pages/admin/MechanicServices"
 import Errorpage from "./pages/Errorpage"
+import Chatbot from "./pages/Chatbot"
 
 
 
@@ -53,7 +54,9 @@ function App() {
     <Route path='/admin/servicetable' element={<PublicAdminRoute><AdServiceTable/></PublicAdminRoute>}/>
     <Route path='/admin/mechanicservices' element={<PublicAdminRoute><MechanicServices/></PublicAdminRoute>}/>
     <Route path='/mechanic/login' element={<ProtectedMechRoute><Mechaniclogin/></ProtectedMechRoute>}/>                     
-    <Route path='/mechanic/home' element={<ProtectedMechRoute><Mechanichome/></ProtectedMechRoute>}/>                     
+    <Route path='/mechanic/home' element={<ProtectedMechRoute><Mechanichome/></ProtectedMechRoute>}/>  
+    <Route path='/chat' element={<Chatbot/>}/>                  
+    <Route path='/chat' element={<Chatbot/>}/>                     
     <Route path='*'element={<Errorpage/>}/>
     
 

@@ -25,16 +25,17 @@ function Body5() {
               <a href="/bookcarwash"></a>
             </div>
           </div>
+          <div>
           <div className="pic1 flex md:h-128  h-128  md:ml-  ml-36 mb-10 md:mb-24 absolute inset-x-0 bottom-0 justify-center">
             <img src="\img\photo-1592150873193-e001e1a14fdc 1 (1).png" alt="Image 1" className="h-auto md:h-full object-cover" />
-          </div>
-          <div className="pic2 flex md:h-128  h-128  md:ml-48 mr-14 ml-36 mb-10 md:mb-24 absolute inset-x-0 bottom-0 justify-end">
-            <img src=" \img\black-dark-cars-photography-nissan-vehicles-matte-black-cars-nissan-skyline-gtr-r34-1920x1200-wal-abstract-photography-hd-art-wallpaper-preview 1.png" alt="Image 1" className="h-auto md:h-full object-cover" />
           </div>
           <div className="pic3 flex md:h-128  h-128  md:ml-129  mb-10 md:mb-24 absolute inset-x-0 bottom-0 justify-stretch">
             <img src="\img\bugatti-chiron-pur-sport-black-cars-5k-8k-2560x2560-4975 1.png" alt="Image 1" className="h-auto md:h-full object-cover" />
           </div>
-          
+          <div className="pic2 flex md:h-128  h-128  md:ml-48 mr-14 ml-36 mb-10 md:mb-24 absolute inset-x-0 bottom-0 justify-end">
+            <img src=" \img\black-dark-cars-photography-nissan-vehicles-matte-black-cars-nissan-skyline-gtr-r34-1920x1200-wal-abstract-photography-hd-art-wallpaper-preview 1.png" alt="Image 1" className="h-auto md:h-full object-cover" />
+          </div>
+          </div>
         </div>
       </div>
     </div>

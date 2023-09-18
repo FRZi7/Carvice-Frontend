@@ -3,10 +3,10 @@ import React from 'react';
 function Body3() {
   return (
     <div className="flex flex-col">
-      <a href="/">
+      
         <div
           className="relative w-screen h-screen bg-cover"
-          style={{ backgroundImage: `url("/img/124062.jpg")` }}
+          style={{ backgroundImage: `url("img/no-image-3.png")` }}
         >
           <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center">
             <h2 className="text-xl md:text-2xl mx-4 md:mx-10 font-serif">
@@ -31,7 +31,7 @@ function Body3() {
             </div>
           </div>
         </div>
-      </a>
+     
     </div>
   );
 }

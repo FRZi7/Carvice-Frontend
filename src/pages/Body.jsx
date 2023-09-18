@@ -8,7 +8,7 @@ function Body() {
 <>
 <div className="flex justify-around mt-40">
   <div className="mb-4 nagata relative">
-    <a href='/'>
+    <link to=''/>
     <img
       src="img/3bf66bafff1d8169.jpg"
       className="object-cover w-80 h-52 rounded-3xl transition-all"
@@ -17,9 +17,9 @@ function Body() {
     <div className="absolute inset-0 flex items-center justify-center">
       < h2 className="text-white text-3xl font-serif	">Mechanic</h2>
     </div>
-    </a>
+    
   </div> 
-  <a href='/'>
+  <a href="">
   <div className="mb-4 maxres relative">
     <img
       src="img/car-7291166_960_720.jpg"

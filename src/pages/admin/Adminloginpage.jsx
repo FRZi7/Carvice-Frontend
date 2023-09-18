@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../axios/axios'
 
+
 function Adminloginpage() {
     const navigate = useNavigate()
     const [adminDetails, setAdmindetails] = useState({email:" ",password:" "})

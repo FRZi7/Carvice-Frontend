@@ -7,21 +7,22 @@ import Body4 from './Body4'
 import Body5 from './Body5'
 import axios from "axios"
 import Footer from './Footer'
+// import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom'
 
 
 function Home() { 
   return (
-    <>
-      <div className='h-screen w-screen' >
-      <div className=" h-screen w-full bg-center bg-cover" style={{ backgroundImage: 'url("img/melih-karaahmet-Tkz9YXDn3FY-unsplash.jpg")' }}>
+    <>   
+      <div className='h-screen w-screen' overflow-x-hidden >
+      <div className=" h-screen w-full bg-center bg-cover" style={{ backgroundImage: 'url("img/peakpx.jpg")'}}>
         <Navbar/>
         <Body/>
-        <div className="flex flex-wrap justify-start">
-        </div>
        </div>
       </div>
       <div id='carwash'>
-       <div className='h-screen w-screen bg-gradient-to-r from-black to-slate-950'>
+       <div className='h-screen w-52 bg-gradient-to-r from-black to-slate-950'>
+         {/* <Route path='/body'/> */}
           <Body2/>
        </div>
        <div className='h-screen w-screen overflow-hidden bg-gradient-to-r from-black to-slate-950'>

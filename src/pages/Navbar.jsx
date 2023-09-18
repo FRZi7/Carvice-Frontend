@@ -26,7 +26,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-scree relative z-50 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg ">
+    <nav className="w relative z-50 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg ">
       <div className="max-w-screen mx-auto px-6 sm:px-48 lg:px-48">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -42,10 +42,10 @@ const Navbar = () => {
                   Home
                 </a>
                 <a
-                  href="#"
+                  href="/chat"
                   className="text-black-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition delay-150 duration-150 ease-in-out"
                 >
-                  Services
+                  Chat With us
                 </a>
                 <a
                   href="#"
@@ -79,7 +79,7 @@ const Navbar = () => {
                         </svg>
                       </button>
                     </div>
-                    {isMenuOpen && (
+                    {isMenuOpen === true && (
                       <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                         <div
                           className="py-1"
@@ -182,10 +182,70 @@ const Navbar = () => {
             Contact
           </a>
           <a
-            href="/login"
+            onClick={logout}
             className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition delay-75 duration-75 ease-in-out"
           >
-            {isLogged ?  userData?.name : "login"}
+            Logout
+          </a>
+          <a
+            href="/login"
+            className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition delay-75 duration-75 ease-in-out "  
+          >
+          {isLogged ?   
+            <div className="relative inline-block text-left">
+            <div>
+              <button
+                type="button"
+                className="text-black-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition delay-150 duration-150 ease-in-out focus:outline-none"
+                onClick={toggleMenu}
+              >
+                {userData?.name}
+                <svg
+                  className="ml-1 -mr-0.5 h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+            </div>
+            {isMenuOpen && (
+              <div className="origin-top-right absolute w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                <div
+                  className="py-1"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="options-menu"
+                >
+                  <a
+                    href="/edituser"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                    role="menuitem"
+                  >
+                    Account Settings & payments
+                  </a>
+                 
+                  <button
+                    onClick={logout}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left"
+                    role="menuitem"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+            
+            : "login"} 
           </a>
         </div>
       </div>
